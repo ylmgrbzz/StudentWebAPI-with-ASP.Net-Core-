@@ -32,5 +32,45 @@ namespace StudentWebAPI.Controllers
             //return CreatedAtAction(nameof(GetStudent), new { id = student.Id }, student);
         }
 
+        [HttpPatch]
+        [Route("UpdateStudent/{id}")]
+        public async Task<ActionResult<Student>> UpdateStudent(Student student)
+        {
+            _studentDbContext.Entry(student).State = EntityState.Modified;
+            await _studentDbContext.SaveChangesAsync();
+            return student;
+        }
+
+        //[HttpPatch]
+        //[Route("UpdateStudent/{id}")]
+        //public async Task<ActionResult<Student>> UpdateStudent(int id)
+        //{
+        //    var student = await _studentDbContext.Students.FindAsync(id);
+        //    if (student == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _studentDbContext.Students.Update(student);
+        //    await _studentDbContext.SaveChangesAsync();
+        //    return student;
+        //}
+
+        [HttpDelete]
+        [Route("DeleteStudent/{id}")]
+        public async Task<ActionResult<Student>> DeleteStudent(int id)
+        {
+            var student = await _studentDbContext.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            _studentDbContext.Students.Remove(student);
+            await _studentDbContext.SaveChangesAsync();
+            return student;
+        }
+
+
+
+
     }
 }
